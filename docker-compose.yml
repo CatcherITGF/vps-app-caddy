@@ -12,7 +12,7 @@ services:
     volumes:
       - ./webroot:/srv
       - ./certs:/root/.caddy
-      - ./caddyfile:/etc/Caddyfile
+      - ./Caddyfile:/etc/Caddyfile
       - /etc/localtime:/etc/localtime
     ports:
       - "80:80"
