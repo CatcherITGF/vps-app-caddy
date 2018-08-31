@@ -1,0 +1,44 @@
+(certs) {
+	tls snupt@snupt.com {
+		dns route53
+	}
+}
+
+https://snupt.com {
+	import certs
+	root /srv/snupt.com
+	cache {
+		match_path /images
+	}
+	gzip
+	errors {
+		404 404.html
+	}
+	header / {
+		Strict-Transport-Security "max-age=31536000;"
+		X-Frame-Options deny
+		X-XSS-Protection "1; mode=block"
+		X-Content-Type-Options nosniff
+	}
+}
+
+https://git.snupt.com {
+	import certs
+	proxy / gogs:3000 {
+		transparent
+	}
+}
+
+https://mail.snupt.com {
+	import certs
+	proxy / rainloop:8888 {
+		transparent
+	}
+}
+
+http://st-de.snupt.com {
+	tls off
+	proxy / speedtest:80 {
+		transparent
+	}
+}

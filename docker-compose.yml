@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  app:
+    # image: abiosoft/caddy
+    build:
+      context: https://github.com/abiosoft/caddy-docker.git
+      dockerfile: Dockerfile-no-stats
+      args:
+        - plugins=cache,route53
+    container_name: caddy
+    volumes:
+      - ./webroot:/srv
+      - ./certs:/root/.caddy
+      - ./caddyfile:/etc/Caddyfile
+      - /etc/localtime:/etc/localtime
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+    env_file: .secrets
+    environment:
+      - ACME_AGREE=true
+
+networks:
+  default:
+    external:
+      name: webserver
